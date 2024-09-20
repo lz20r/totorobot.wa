@@ -1,27 +1,23 @@
-// models/totoWelcm.js
 const { DataTypes } = require("sequelize");
 const TotoDB = require("../libs/db/totoDB");
 const totoroLog = require("../functions/totoroLog");
-const TotoGroupSettings = require("./totoGroupSettings");
+const totoGroupSettings = require("./totoGroupSettings");
 
 const tDB = new TotoDB();
-
 const totoWelcm = tDB.sequelize.define(
   "totoWelcm",
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
     groupId: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: TotoGroupSettings,
+        model: totoGroupSettings,
         key: "groupId",
       },
+    },
+    groupName: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING,
@@ -35,7 +31,9 @@ const totoWelcm = tDB.sequelize.define(
   },
   {
     tableName: "totoWelcm",
-    timestamps: false, 
+    timestamps: false,
+    charset: "utf8mb4",
+    collate: "utf8mb4_general_ci",
   }
 );
 
@@ -45,10 +43,5 @@ if (!totoWelcm) {
     "[MODELS] Error al crear el modelo totoWelcm."
   );
 }
-
-totoWelcm.belongsTo(TotoGroupSettings, {
-  foreignKey: "groupId",
-  targetKey: "groupId",
-});
 
 module.exports = totoWelcm;
