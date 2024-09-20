@@ -4,24 +4,25 @@ const totoroLog = require("../functions/totoroLog");
 
 const tDB = new TotoDB();
 
-const totoGroupSettings = tDB.sequelize.define( 
+const totoGroupSettings = tDB.sequelize.define(
   "totoGroupSettings",
   {
     groupId: {
       type: DataTypes.STRING,
+      allowNull: false,
       primaryKey: true,
-      allowNull: false,
     },
-
-    welcomeEnabled: {
-      type: DataTypes.BOOLEAN,
+    status: {
+      type: DataTypes.ENUM("on", "off"),
       allowNull: false,
-      defaultValue: false,
+      defaultValue: "off",
     },
   },
   {
-    tableName: "totoGroupSettings", // Asegúrate de que el nombre de la tabla sea correcto
+    tableName: "totoGroupSettings",
     timestamps: false,
+    charset: "utf8mb4",
+    collate: "utf8mb4_general_ci",
   }
 );
 
