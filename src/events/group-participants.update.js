@@ -6,30 +6,34 @@ module.exports = {
 
   async load(msg, totoro) {
     try {
-      const toto = msg;
-      const groupId = toto.id;
+      const groupId = msg.id; 
       const groupConfig = await totoGroupSettings.findOne({
         where: { groupId },
-      });
-
-      if (!groupConfig || !groupConfig.welcomeEnabled) {
+      }); 
+      if (!groupConfig || groupConfig.status !== "on") {
         return;
       }
 
-      const phone = toto.participants[0];
+      if (!msg.participants || msg.participants.length === 0) {
+        return;
+      }
 
+      const phone = msg.participants[0]; // Primer participante
       if (!phone) {
         return;
       }
 
-      // Determinar la acción a partir del mensaje directamente
-      const action = msg.action; // Ejemplo ficticio
+      const action = msg.action;
 
       switch (action) {
         case "add":
           try {
+            const groupInfo = await totoro.groupMetadata(groupId);
+            const groupName = groupInfo.subject;
+
             await totoWelcm.create({
               groupId: groupId,
+              groupName: groupName,
               phone: phone.split("@")[0],
               action: "join",
             });
@@ -37,36 +41,39 @@ module.exports = {
             let profile;
             try {
               profile = await totoro.profilePictureUrl(phone, "image", 5000);
-            } catch (profileError) {
-              console.error(
-                "Error obteniendo la foto de perfil:",
-                profileError
-              );
+            } catch {
               profile = "https://i.ibb.co/j9N5kj3/image.jpg";
             }
 
             const card = await greetings(
               profile,
-              "BIENVENIDO",
+              "Bienvenido/a",
               phone.split("@")[0]
             );
-
             const prefix = require("../../settings.json").prefix;
-            const groupInfo = await totoro.groupMetadata(groupId);
-            const groupName = groupInfo.subject;
-            const message =
-              `> 👋 Bienvenido  @${phone.split("@")[0]} al grupo ${groupName}.\n` +
-              `                                 ⭣\n` +
-              `> 📜 Lee la descripción para enterarte de las reglas y evitar sanciones :D\n` +
-              `> ❗Información importante:\n` +
-              `> 🔓 Para poder tener acceso completo al bot sin problemas usa:${prefix}register\n` +
-              `> 😃 Si tienes alguna duda, sugerencia o problema no dudes en usar: ${prefix}report, ${prefix}review, ${prefix}suggest\n` +
-              `> ❤ Disfruta de tu estancia en Only 3! 🌿🍃\n\n` +
-              `> 🪼 Actualmente en *${groupName}* hay ${groupInfo.participants.length} miembros.`;
+
+            const welcomeMessage =
+              `╭───⬣ 〘 *🎉 Bienvenido/a @${phone.split("@")[0]} 🎉* 〙\n` +
+              `│\n` +
+              `│ 🌟 *¡Qué gusto tenerte en* *${groupName}*!* 🌟\n` +
+              `│\n` +
+              `│ 📋 *Recuerda echarle un vistazo a la descripción del grupo para conocer nuestras reglas.*\n` +
+              `│\n` +
+              `│ 🔑 *Acceso completo al bot:*\n` +
+              `│    - Usa *${prefix}register* para activar todas las funcionalidades del bot.\n` +
+              `│\n` +
+              `│ ❓ *¿Tienes alguna duda, problema o sugerencia?*\n` +
+              `│    - Reporta con: *${prefix}faq report*\n` +
+              `│    - Haz sugerencias con: *${prefix}faq suggest*\n` +
+              `│\n` +
+              `│ 💬 *Deja tu reseña con:* *${prefix}faq review*\n` +
+              `│\n` +
+              `│ 👥 *Actualmente somos* *${groupInfo.participants.length}* *miembros en el grupo.*\n` +
+              `╰───⬣ ¡Disfruta y sé parte de esta gran comunidad! 🌿🍃`;
 
             await totoro.sendMessage(groupId, {
               image: card,
-              caption: message,
+              caption: welcomeMessage,
               mentions: [phone],
             });
           } catch (dbError) {
@@ -79,119 +86,40 @@ module.exports = {
 
         case "remove":
           try {
+            const groupInfo = await totoro.groupMetadata(groupId);
+            const groupName = groupInfo.subject;
+
             await totoWelcm.create({
               groupId: groupId,
+              groupName: groupName,
               phone: phone.split("@")[0],
               action: "leave",
             });
 
             let profile;
             try {
-              profile = await totoro.profilePictureUrl(toto.id, "image");
-            } catch (profileError) {
-              console.error(
-                "Error obteniendo la foto de perfil:",
-                profileError
-              );
+              profile = await totoro.profilePictureUrl(groupId, "image");
+            } catch {
               profile = "https://i.ibb.co/j9N5kj3/image.jpg";
             }
 
             const pushname = phone.split("@")[0];
-            const card = await greetings(profile, "ADIOS", pushname);
-
-            const message = `*🌳 Adios @${pushname}*`;
+            const card = await greetings(profile, "Hasta Pronto", pushname);
+            const farewellMessage =
+              `╭───⬣ 〘 *🌟 ¡Adiós  @${phone.split("@")[0]}!* 🌟 〙\n` +
+              `│\n` +
+              `│ 😢 *Lamentamos verte partir de* *${groupName}*.\n` +
+              `│\n` +
+              `│ 🍃 *Esperamos que te haya gustado tu tiempo con nosotros y que regreses pronto.*\n` +
+              `│\n` +
+              `│ 🙌 *Recuerda que siempre serás bienvenido/a a unirte de nuevo.*\n` +
+              `│\n` +
+              `│ 👥 *Ahora somos* *${groupInfo.participants.length}* *miembros en el grupo.*\n` +
+              `╰───⬣ ¡Cuídate y hasta pronto! 👋`;
 
             await totoro.sendMessage(groupId, {
               image: card,
-              caption: message,
-              mentions: [phone],
-            });
-          } catch (dbError) {
-            console.error(
-              "Error al agregar el teléfono a la base de datos:",
-              dbError
-            );
-          }
-          break;
-
-        case "kick":
-          try {
-            await totoWelcm.create({
-              groupId: groupId,
-              phone: phone.split("@")[0],
-              action: "kick",
-            });
-
-            const message = `*🌳 Expulsado @${phone}*`;
-
-            await totoro.sendMessage(groupId, {
-              text: message,
-              mentions: [phone],
-            });
-          } catch (dbError) {
-            console.error(
-              "Error al agregar el teléfono a la base de datos:",
-              dbError
-            );
-          }
-          break;
-
-        case "spam":
-          try {
-            await totoWelcm.create({
-              groupId: groupId,
-              phone: phone.split("@")[0],
-              action: "spam",
-            });
-
-            const message = `*🌳 Mensaje de advertencia por spam a @${phone}*`;
-
-            await totoro.sendMessage(groupId, {
-              text: message,
-              mentions: [phone],
-            });
-          } catch (dbError) {
-            console.error(
-              "Error al agregar el teléfono a la base de datos:",
-              dbError
-            );
-          }
-          break;
-
-        case "block":
-          try {
-            await totoWelcm.create({
-              groupId: groupId,
-              phone: phone.split("@")[0],
-              action: "block",
-            });
-
-            const message = `*🌳 Usuario @${phone} bloqueado*`;
-
-            await totoro.sendMessage(groupId, {
-              text: message,
-              mentions: [phone],
-            });
-          } catch (dbError) {
-            console.error(
-              "Error al agregar el teléfono a la base de datos:",
-              dbError
-            );
-          }
-          break;
-
-        case "antilinks":
-          try {
-            await totoWelcm.create({
-              groupId: groupId,
-              phone: phone.split("@")[0],
-              action: "antilinks",
-            });
-
-            const message = `*🌳 Advertencia por compartir enlaces a @${phone}*`;
-
-            await totoro.sendMessage(groupId, {
-              text: message,
+              caption: farewellMessage,
               mentions: [phone],
             });
           } catch (dbError) {
