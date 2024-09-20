@@ -3,7 +3,6 @@ const { help, sendError, sendWarning } = require("../../functions/messages");
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
 const cloudinary = require("cloudinary").v2;
 const axios = require("axios");
-const { text } = require("express");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -21,34 +20,51 @@ module.exports = {
   async execute(totoro, msg, args) {
     try {
       msg.react("🔍");
-      const message = msg.messages[0].message?.extendedTextMessage?.contextInfo
-        ?.quotedMessage
-        ? msg.messages[0].message?.extendedTextMessage?.contextInfo
-            ?.quotedMessage.imageMessage
-        : msg.messages[0].message?.imageMessage;
 
+      // Verificar si hay un mensaje citado o si es un mensaje directo
+      const message =
+        msg.messages[0].message.ephemeralMessage.message.extendedTextMessage
+          .contextInfo.quotedMessage.ephemeralMessage.message.imageMessage;
       if (!message)
-        return sendWarning(totoro, msg, "Necesitas enviar algún archivo."); // Validar si hay un mensaje citado
+        return sendWarning(
+          totoro,
+          msg,
+          "Necesitas citar o enviar algún archivo."
+        );
 
+      // Obtener jpegThumbnail y mediaKey
+      const jpegThumbnail = message.jpegThumbnail;
+      const mediaKey = message.mediaKey;
+
+      if (!jpegThumbnail || !mediaKey) {
+        return sendWarning(
+          totoro,
+          msg,
+          "No se encontró jpegThumbnail o mediaKey."
+        );
+      }
+
+      // Descargar el contenido de la imagen
       const contentStream = await downloadContentFromMessage(
         message,
         "image"
       ).catch((e) => {
         return sendWarning(totoro, msg, "Necesitas enviar algún archivo.");
-      }); // Descargar el contenido como stream
+      });
 
       const buffer = await streamToBuffer(contentStream); // Convertir el stream a buffer
 
       msg.react("⬆️");
+
+      // Subir la imagen a Cloudinary
       cloudinary.uploader
         .upload_stream({ resource_type: "auto" }, async (error, result) => {
           if (error) {
-            sendError(totoro, msg, "Error uploading buffer: " + error);
+            sendError(totoro, msg, "Error al subir la imagen: " + error);
             return;
           }
 
           const shortenedUrl = await shortenUrl(result.secure_url);
-
           const fileSizeKB = (result.bytes / 1024).toFixed(2);
 
           const participant =
@@ -59,6 +75,7 @@ module.exports = {
             : "";
 
           msg.react("🔗");
+
           const responseText =
             `╭─⬣「 *URL del archivo* 」\n` +
             `│  ≡◦ *📂 Nombre*: ${result.original_filename}\n` +
@@ -98,6 +115,6 @@ async function shortenUrl(url) {
     );
     return response.data;
   } catch (error) {
-    throw new Error("Error shortening URL: " + error.message);
+    throw new Error("Error acortando la URL: " + error.message);
   }
 }
