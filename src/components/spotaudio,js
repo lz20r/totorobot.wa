@@ -1,0 +1,42 @@
+module.exports = {
+  id: "spotaudio",
+  name: "spotAudio",
+
+  async execute(totoro, msg, args) {
+    const uniqueId = args[0];
+    const { remoteJid, participant } = msg.messages[0].key;
+
+    await msg.react("⏳");
+    const audioBuffer = totoro.audioBuffers
+      ? totoro.audioBuffers[uniqueId]
+      : null;
+
+    if (!audioBuffer) {
+      console.error("audioBuffer no encontrado para el ID:", uniqueId);
+      return totoro.sendMessage(remoteJid || participant, {
+        text: `No se encontró la canción con el ID: ${uniqueId}`,
+        quoted: msg.messages[0],
+      });
+    }
+
+    try {
+      await totoro.sendMessage(
+        remoteJid || participant,
+        {
+          audio: audioBuffer,
+          ptt: true, // Esto asegura que se envía como un mensaje de voz (push-to-talk)
+          caption: "🎵 Aquí está tu canción",
+        },
+        { quoted: msg.messages[0] }
+      );
+    } catch (sendError) {
+      console.error("Error al enviar la canción:", sendError);
+      return totoro.sendMessage(remoteJid || participant, {
+        text: "No se pudo enviar la canción.",
+        quoted: msg.messages[0],
+      });
+    }
+
+    await msg.react("🎶");
+  },
+};

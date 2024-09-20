@@ -1,0 +1,70 @@
+const { sendError } = require("../functions/messages");
+const totoroLog = require("../functions/totoroLog");
+
+module.exports = {
+  id: "sendimage",
+
+  async execute(totoro, msg, args, message) {
+    try {
+      msg.react("⏳");
+
+      // Verificar si msg.messages está definido y tiene elementos
+      if (!msg.messages || msg.messages.length === 0) {
+        console.error("No messages found in msg object");
+        sendError(msg, "No messages found");
+        return;
+      }
+
+      const url = args[0];
+      const remoteJid = msg.messages[0].remoteJid;
+      const fromMe = msg.messages[0].fromMe;
+      const participant = msg.messages[0].participant;
+      const messageTimestamp = msg.messages[0].messageTimestamp;
+
+      // Verificar si todas las propiedades necesarias están definidas
+      if (
+        remoteJid &&
+        typeof fromMe !== "undefined" &&
+        participant &&
+        messageTimestamp
+      ) {
+        try {
+          await totoro.client.sendMessage(
+            remoteJid,
+            { url: url },
+            "mediaMessage", // Cambiado de "imageMessage" a "mediaMessage"
+            {
+              caption: args.slice(1).join(" "),
+              quoted: message,
+              timestamp: messageTimestamp,
+              fromMe: fromMe,
+              participant: participant,
+            }
+          );
+          msg.react("✅");
+        } catch (error) {
+          console.error("Error sending image:", error);
+          sendError(msg, error);
+        }
+      } else {
+        totoroLog.error(
+          "./logs/plugins/multimedia/sendimage.js",
+          "Missing parameters"
+        );
+        console.error(
+          `${JSON.stringify({
+            remoteJid,
+            fromMe,
+            participant,
+            messageTimestamp,
+          })}`
+        );
+
+        sendError(msg, "Missing parameters");
+      }
+    } catch (error) {
+      console.error("Unhandled error:", error);
+      sendError(msg, error);
+    }
+  },
+};
