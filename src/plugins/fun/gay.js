@@ -71,8 +71,7 @@ module.exports = {
         let profile;
         try {
           profile = await totoro.profilePictureUrl(user, "image", 5000);
-        } catch (profileError) {
-          console.error("Error obteniendo la foto de perfil:", profileError);
+        } catch (profileError) { 
           profile = "https://tinyurl.com/22289x2t"; // Imagen de respaldo
         }
 
