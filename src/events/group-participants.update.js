@@ -6,10 +6,10 @@ module.exports = {
 
   async load(msg, totoro) {
     try {
-      const groupId = msg.id; 
+      const groupId = msg.id;
       const groupConfig = await totoGroupSettings.findOne({
         where: { groupId },
-      }); 
+      });
       if (!groupConfig || groupConfig.status !== "on") {
         return;
       }
@@ -42,7 +42,7 @@ module.exports = {
             try {
               profile = await totoro.profilePictureUrl(phone, "image", 5000);
             } catch {
-              profile = "https://i.ibb.co/j9N5kj3/image.jpg";
+              profile = "https://tinyurl.com/22289x2t";
             }
 
             const card = await greetings(
@@ -100,7 +100,7 @@ module.exports = {
             try {
               profile = await totoro.profilePictureUrl(groupId, "image");
             } catch {
-              profile = "https://i.ibb.co/j9N5kj3/image.jpg";
+              profile = "https://tinyurl.com/22289x2t";
             }
 
             const pushname = phone.split("@")[0];

@@ -47,7 +47,7 @@ module.exports = {
 
     const { imageMessage } = await prepareWAMessageMedia(
       {
-        image: { url: "https://i.ibb.co/j9N5kj3/image.jpg" },
+        image: { url: "https://tinyurl.com/22289x2t" },
       },
       { upload: totoro.waUploadToServer }
     );

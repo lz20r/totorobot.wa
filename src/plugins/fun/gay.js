@@ -73,7 +73,7 @@ module.exports = {
           profile = await totoro.profilePictureUrl(user, "image", 5000);
         } catch (profileError) {
           console.error("Error obteniendo la foto de perfil:", profileError);
-          profile = "https://i.ibb.co/j9N5kj3/image.jpg"; // Imagen de respaldo
+          profile = "https://tinyurl.com/22289x2t"; // Imagen de respaldo
         }
 
         msg.react("🏳️‍🌈");
