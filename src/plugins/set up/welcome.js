@@ -1,18 +1,13 @@
 const { totoGroupSettings } = require("../../models");
 const { prefix } = require("../../../settings.json");
-const {
-  help,
-  sendMessage,
-  sendWarning,
-  sendError,
-} = require("../../functions/messages");
+const { help, sendWarning, sendError } = require("../../functions/messages");
 const totoroLog = require("../../functions/totoroLog");
 
 module.exports = {
   name: "welcome",
   aliases: ["bienvenida", "wlcm", "welcm"],
-  category: "settings",
-  subcategory: "setup",
+  category: "setup",
+  subcategory: "config group",
   usage: "<on / off>",
   example: "setwelcome on",
   description:

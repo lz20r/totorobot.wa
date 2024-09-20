@@ -5,7 +5,7 @@ const settings = require("../../../settings.json");
 module.exports = {
   name: "economy",
   category: "setup",
-  subcategory: "settings",
+  subcategory: "config group",
   aliases: ["geconomy", "economygroup", "gec", "economy"],
   usage: `${settings.prefix}economy <on|off>`,
   description: "Activa o desactiva el sistema de economía del bot en un grupo",

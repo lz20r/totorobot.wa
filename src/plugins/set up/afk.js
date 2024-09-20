@@ -3,8 +3,8 @@ const { sendError } = require("../../functions/messages");
 const totoroPrefix = require("../../../settings.json").prefix;
 module.exports = {
   name: "afk",
-  category: "settings",
-  subcategory: "setup",
+  category: "setup",
+  subcategory: "personal",
   usage: "afk <razón>",
   description: "Ponte en modo ausente.",
   example: "afk Estoy ocupado.",
