@@ -113,15 +113,14 @@ module.exports = {
           });
         } else {
           await groupConfig.update({ status: "off" });
-          return sendMessage(
-            totoro,
-            msg,
-            `╭─⬣ 🌟 *Configuración de Bienvenidas* 🌟 ⬣\n` +
+          return msg.reply({
+            text:
+              `╭─⬣ 🌟 *Configuración de Bienvenidas* 🌟 ⬣\n` +
               `│\n` +
               `│ ❌ *Se desactivaron* las bienvenidas en el grupo *${groupName}*.\n` +
               `│\n` +
-              `╰─⬣`
-          );
+              `╰─⬣`,
+          });
         }
       } else {
         // Si el modo no es ni "on" ni "off", mostrar la ayuda
