@@ -69,8 +69,8 @@ module.exports = {
         `│  ≡◦ *Admin:* \`${plugin.admin ? "Sí" : "No"}\`\n` +
         `│  ≡◦ *Premium:* \`${plugin.cmdPrem ? "Sí" : "No"}\`\n` +
         `│  ≡◦ *Bloqueo:* \`${plugin.blockcmd ? "Sí" : "No"}\`\n` +
-        `│  ≡◦ *Cooldown:* \`${plugin.cooldown || 3} segundos\`\n` +
         `│  ≡◦ *Economy:* \`${plugin.economy ? "Sí" : "No"}\`\n` +
+        `│  ≡◦ *Cooldown:* \`${plugin.cooldown || 3} segundos\`\n` +
         `╰─────────────────────`;
 
       return reply(embed);

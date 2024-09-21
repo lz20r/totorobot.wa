@@ -32,11 +32,23 @@ module.exports = {
         return;
       }
 
-      const targetLang = args[0];
+      const targetLang = args[0].toLowerCase();
+ 
+
+      // Validar si el idioma es soportado
+      if (!idiomas[targetLang]) {
+        await sendError(
+          totoro,
+          msg,
+          `El código de idioma '${targetLang}' no está soportado.`
+        );
+        return;
+      }
 
       // Validar si hay un mensaje citado
-      const quotedMessage =
-        msg.messages[0].message.extendedTextMessage?.contextInfo?.quotedMessage;
+      const quotedMessage = msg.messages[0].message.extendedTextMessage?.contextInfo?.quotedMessage;
+
+
       if (!quotedMessage) {
         await sendMessage(
           totoro,
@@ -46,8 +58,7 @@ module.exports = {
         return;
       }
 
-      const textToTranslate =
-        quotedMessage.conversation || quotedMessage.extendedTextMessage?.text;
+      const textToTranslate = quotedMessage.conversation || quotedMessage.extendedTextMessage?.text;
 
       if (!textToTranslate) {
         await sendWarning(
@@ -69,39 +80,20 @@ module.exports = {
         return;
       }
 
-      // Verificar si la traducción está en caché
-      const cacheKey = `${textToTranslate}_${targetLang}`;
-      if (cache.has(cacheKey)) {
-        const cachedTranslation = cache.get(cacheKey);
-        cache.delete(cacheKey); // Borrar la caché después de usarla
-        await msg.reply(
-          `${cachedTranslation}\n\n> 🌐 Traducción a ${
-            idiomas[targetLang.toLowerCase()] || targetLang
-          }`
-        );
-        return;
-      }
-
       // Llamar a la API de Google Translate con reintentos
-      const translatedText = await translateWithRetry(
-        textToTranslate,
-        targetLang
-      );
+      const translatedText = await translateWithRetry(textToTranslate, targetLang);
 
-      const targetLangName = idiomas[targetLang.toLowerCase()] || targetLang;
-
-      // Guardar la traducción en caché y luego borrarla
-      cache.set(cacheKey, translatedText);
-      cache.delete(cacheKey);
+      const targetLangName = idiomas[targetLang] || targetLang;
 
       await msg.reply(
         `${translatedText}\n\n> 🌐 Traducción a ${targetLangName}`
       );
     } catch (error) {
+      console.error(`Error al traducir: ${error.message}`);
       await sendError(
         totoro,
         msg,
-        `No existe un idioma con el código ${args[0]}.`
+        `Hubo un error al traducir el mensaje: ${error.message}`
       );
     }
   },
@@ -115,7 +107,6 @@ async function translateWithRetry(text, targetLang, retries = 3) {
     } catch (error) {
       if (error.message.includes("429")) {
         if (attempt < retries) {
-          // Esperar 1 segundo antes de reintentar
           await new Promise((resolve) => setTimeout(resolve, 1000));
         } else {
           throw new Error(
@@ -134,8 +125,9 @@ async function translateText(text, targetLang) {
     const result = await translate(text, { to: targetLang });
     return result.text;
   } catch (error) {
-    // Añadir más detalles sobre el error
     console.error(`Error en la traducción: ${error.message}`);
-    throw new Error(`Hubo un problema al traducir al idioma ${targetLang}. Verifica si el código es correcto.`);
+    throw new Error(
+      `Error al traducir al idioma '${targetLang}': ${error.message}`
+    );
   }
 }
