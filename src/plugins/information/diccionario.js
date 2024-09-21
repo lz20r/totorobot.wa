@@ -15,7 +15,7 @@ async function getDefinition(word) {
 module.exports = {
   name: "dictionary",
   aliases: ["diccionario", "dictionary", "dic", "rae", "def"],
-  category: "infomación",
+  category: "information",
   subcategory: "dictionary",
   usage: `${prefix}def <word>`,
   example: `${prefix}def love`,
