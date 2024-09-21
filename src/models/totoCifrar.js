@@ -1,36 +1,31 @@
 const { DataTypes } = require("sequelize");
 const TotoDB = require("../libs/db/totoDB");
-const totoroLog = require("../functions/totoroLog");
-const tDB = new TotoDB();
 const totoUser = require("./totoUser");
+const totoroLog = require("../functions/totoroLog");
+
+const tDB = new TotoDB();
 
 const totoCifrar = tDB.sequelize.define(
   "totoCifrar",
   {
-    userId: {
+    id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
-      references: {
-        model: totoUser,
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
-    },
-    telefono: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: totoUser,
-        key: "phone",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     },
     key: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: totoUser,
+        key: 'id',
+      },
+      allowNull: false,
+      unique: true,  // Hace que userId sea único
+      onDelete: 'CASCADE',
     },
   },
   {
@@ -38,6 +33,14 @@ const totoCifrar = tDB.sequelize.define(
     timestamps: false,
   }
 );
+
+// Establecer las asociaciones
+totoUser.hasMany(totoCifrar, {
+  foreignKey: "userId",
+});
+totoCifrar.belongsTo(totoUser, {
+  foreignKey: "userId",
+});
 
 if (!totoCifrar) {
   totoroLog.error(
