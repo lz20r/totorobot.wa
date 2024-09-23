@@ -4,6 +4,7 @@ const { sendError } = require("../../functions/messages");
 const totoroLog = require("../../functions/totoroLog");
 const settings = require("../../../settings.json");
 const runtime = require("../../functions/runtime");
+const { generateWAMessageFromContent, proto } = require("@whiskeysockets/baileys");
 
 module.exports = {
   name: "botinfo",
@@ -19,6 +20,7 @@ module.exports = {
   async execute(totoro, msg) {
     try {
       // Obtener teléfonos de desarrolladores
+      const from = msg.messages[0]?.key?.remoteJid;
       const devUsers = await totoDev.findAll({ attributes: ["phone"] });
       const devPhones = devUsers.map((dev) =>
         dev.phone.replace("@s.whatsapp.net", "")
@@ -91,11 +93,32 @@ module.exports = {
       txt += `*totoPremium ∙* \`${premiumUsers}\`\n`;
       txt += `*totoPlugins ∙* \`${totalPlugins}\`\n\n`;
       txt += `> *totoPlugins Ejecutados ∙* \`${totalPluginsExec}\``;
-  
-      msg.reply({
-        text: txt,
-        contextInfo: { mentionedJid: [dev, "447360497992@s.whatsapp.net"] },
+   
+      const messageContent = {
+        extendedTextMessage: {
+          text: txt,
+          contextInfo: {
+            mentionedJid: [dev, "447360497992@s.whatsapp.net"], // Añadir el JID del owner a las menciones
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: "120363322372961284@newsletter",
+              newsletterName: "Canal de Totoro 🪼",
+              serverMessageId: -1,
+            },
+          },
+        },
+      };
+
+      const protoMessage = proto.Message.fromObject(messageContent);
+      const message = generateWAMessageFromContent(from, protoMessage, {
+        quoted: msg.messages[0],
       });
+
+      // Enviar el mensaje
+      await totoro.relayMessage(from, message.message, {
+        messageId: message.key.id,
+      }); 
+
     } catch (error) {
       // En caso de error, logueamos para depuración y mandamos el mensaje de error al usuario
       totoroLog.error(

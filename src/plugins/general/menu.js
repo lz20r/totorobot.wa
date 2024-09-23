@@ -86,8 +86,8 @@ module.exports = {
 
     let info = `╭─ 🪼 *INFO* ─✧\n`;
     info += `│  ➙  🔹*Prefijo*: \`${prefix}\`\n`;
-    info += `│  ➙  🔹 *Plugins*: ${total}\n`;
-    info += `│  ➙  🔹 *Categorías*: ${sortedCategories.length}\n`;
+    info += `│  ➙  🔹 *Plugins*: \`${total}\`\n`;
+    info += `│  ➙  🔹 *Categorías*: \`${sortedCategories.length}\`\n`;
     info += `│  ➙  🔹 *Ayuda*: \`${prefix}ayuda <comando>\`\n`;
     info += `│  ➙  🔹 *Dev*: @${dev.replace(/@.+/, "")}\n`;
     info += `╰────────✧\n\n`;
