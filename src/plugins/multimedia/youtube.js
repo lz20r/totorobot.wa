@@ -68,19 +68,20 @@ module.exports = {
         txt += `> si deseas descargarlo puedes usarlo con el mismo comando solo que en vez de \`search\` puedes usar \`audio o mp3 o mp4\` seguido de la \`url del video\` o su \`nombre\``;
         txt += `\n\n`;
         searchResults.slice(0, 5).forEach((video, index) => {
-          txt += ` ╭─⬣「 *YouTube Search ${index + 1}* 」⬣\n`;
+          txt += ` \n╭─⬣「 *YouTube Search ${index + 1}* 」⬣\n`;
           txt += ` │  ≡◦ \`🍭 Titulo ∙ ${video.title}\`\n`;
           txt += ` │  ≡◦ \`🕜 Duración ∙ ${video.duration}\`\n`;
           txt += ` │  ≡◦ \`🪴 Publicado ∙ ${video.published}\`\n`;
           txt += ` │  ≡◦ \`📚 Autor ∙ ${video.author}\`\n`;
           txt += ` │  ≡◦ \`⛓ Url ∙ ${video.url}\`\n`;
           txt += ` ╰──────────⬣`;
-          txt += `\n\n`;
         });
+				  txt += `\n\n`;
+        txt += `> Solicitado por: @${participant.split("@")[0]}`;
 
         return totoro.sendMessage(
           remoteJid || participant,
-          { image: { url: img }, caption: txt },
+          { image: { url: img }, caption: txt, mentions: [participant] },
           { quoted: msg.messages[0] }
         );
       }
