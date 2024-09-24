@@ -9,8 +9,7 @@ module.exports = {
     category: "information",
     subcategory: "network",
     usage: `${prefix}ip <dirección_ip>`,
-    cooldown: 5, 
-    cmdBlock: true,
+    cooldown: 5,  
     
     execute: async (totoro, msg, args) => {
         try {
@@ -46,10 +45,10 @@ module.exports = {
             `│   📏 *Longitud:* ${data.lon}\n` +
             `│   📡 *Proveedor:* ${data.isp}\n` +
             `╰───────────────────╯\n` +
-            `✨ *Consulta realizada con éxito!* ✨\n`;
+            `✨ *Consulta realizada con éxito!* ✨`;
     
             
-            await msg.reply(message);
+            return await msg.reply(message);
         } catch (error) {
             console.error(error);
             await sendWarning(totoro, msg, "Ha ocurrido un error al obtener la información de la dirección IP.");
