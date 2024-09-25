@@ -20,9 +20,6 @@ module.exports = {
 		const from = info.key.remoteJid;
 		const prefix = totoro.prefix || "+";
 
-		const reply = (text) => {
-			totoro.sendMessage(from, { text: text }, { quoted: info });
-		};
 
 		if (args[0]) {
 			const plugin =
@@ -44,13 +41,13 @@ module.exports = {
 			let embed =
 			`╭───🌸「 *Propiedades del comando* \`${plugin.name}\` 」\n` +
 			`│\n` +
-			`│ ✨ *Descripción:* \`${plugin.description}\`\n` +
-			`│ 🏷️ *Categoría:* \`${plugin.category}\`\n` +
-			`│ 🍥 *Subcategoría:* \`${plugin.subcategory}\`\n`;
+			`│  ≡◦ ✨ *Descripción:* \`${plugin.description}\`\n` +
+			`│  ≡◦ 🏷️ *Categoría:* \`${plugin.category}\`\n` +
+			`│  ≡◦ 🍥 *Subcategoría:* \`${plugin.subcategory}\`\n`;
 			
 			
 			if (plugin.aliases) {
-			embed += `│ 🌟 *Aliases:* \`${
+			embed += `│  ≡◦ 🌟 *Aliases:* \`${
 				plugin.aliases.map((a) => a).join(", ") || "Sin Alias"
 			}\`\n`;
 		}
@@ -59,20 +56,21 @@ module.exports = {
 			var usage = plugin.usage.split("\n").map((i) => {
 				return prefix + i;
 			});
-			embed += `│ 📚 *Uso:* \`${usage.join("\n")}\`\n`;
+			embed += `│  ≡◦ 📚 *Uso:* \`${usage.join("\n")}\`\n`;
 		}
 
 		if (plugin.example && plugin.example.length > 0) {
-			embed += `│ 🎯 *Ejemplo:* \`${prefix}${plugin.example}\`\n`;
+			embed += `│  ≡◦ 🎯 *Ejemplo:* \`${prefix}${plugin.example}\`\n`;
 		}
 
 		embed +=
-			`│ 👩‍💻 *Dev:* \`${plugin.dev ? "Sí" : "No"}\`\n` +
-			`│ 👑 *Admin:* \`${plugin.admin ? "Sí" : "No"}\`\n` +
-			`│ 💎 *Premium:* \`${plugin.cmdPrem ? "Sí" : "No"}\`\n` +
-			`│ 🚫 *Bloqueo:* \`${plugin.blockcmd ? "Sí" : "No"}\`\n` +
-			`│ 💰 *Economy:* \`${plugin.economy ? "Sí" : "No"}\`\n` +
-			`│ ⏳ *Cooldown:* \`${plugin.cooldown || 3} segundos\`\n` +
+			`│  ≡◦ 👩‍💻 *Dev:* \`${plugin.dev ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ 👑 *Admin:* \`${plugin.admin ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ 💎 *Premium:* \`${plugin.cmdPrem ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ 🚫 *Bloqueo:* \`${plugin.blockcmd ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ 💰 *Economy:* \`${plugin.economy ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ ⏳ *Cooldown:* \`${plugin.cooldown || 3} segundos\`\n` +
+			`│\n` +
 			`╰──🌸──────────`;
 
 
