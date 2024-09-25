@@ -66,7 +66,8 @@ module.exports = {
 		embed +=
 			`│  ≡◦ 👩‍💻 *Dev:* \`${plugin.dev ? "Sí" : "No"}\`\n` +
 			`│  ≡◦ 👑 *Admin:* \`${plugin.admin ? "Sí" : "No"}\`\n` +
-			`│  ≡◦ 💎 *Premium:* \`${plugin.cmdPrem ? "Sí" : "No"}\`\n` +
+			`│  ≡◦ 💎 *Premium:* \`${plugin.cmdPrem ? "Sí" : "No"}\`\n` + 
+			`│  ≡◦ 🚫 *NSFW:* \`${plugin.nsfw ? "Sí" : "No"}\`\n` +
 			`│  ≡◦ 🚫 *Bloqueo:* \`${plugin.blockcmd ? "Sí" : "No"}\`\n` +
 			`│  ≡◦ 💰 *Economy:* \`${plugin.economy ? "Sí" : "No"}\`\n` +
 			`│  ≡◦ ⏳ *Cooldown:* \`${plugin.cooldown || 3} segundos\`\n` +
