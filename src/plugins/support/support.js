@@ -221,7 +221,6 @@ async function handleReviewFlow(totoro, remoteJid, sender, message) {
     });
   }
 }
-
 // Función para esperar la respuesta del usuario mejorada
 async function waitForUserResponse(totoro, remoteJid, sender) {
   return new Promise((resolve, reject) => {
