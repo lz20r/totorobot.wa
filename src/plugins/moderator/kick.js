@@ -89,7 +89,7 @@ module.exports = {
               `> Usuario expulsado: @${targetUser.split("@")[0]}\n` +
               `> Moderador: @${sender.split("@")[0]}\n` +
               `> ⏰ Fecha y hora: ${new Date().toLocaleString()}\n` +
-              `> 🪼 Actualmente en *${groupName}* hay ${groupInfo.participants.length} miembros.`,
+              `> 🦤 Actualmente en *${groupName}* hay ${groupInfo.participants.length} miembros.`,
             mentions: [targetUser, sender],
           },
           footer: { text: "Expulsado por Totoro" },

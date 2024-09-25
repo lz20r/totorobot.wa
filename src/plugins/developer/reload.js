@@ -25,7 +25,7 @@ module.exports = {
       );
       msg.reply(
         `╭──⬣「 Recargado 」⬣\n` +
-          `│  ≡◦ 🪼 Plugins\n` +
+          `│  ≡◦ 🦤 Plugins\n` +
           `│  ≡◦ 🧩 Componentes\n` +
           `╰──⬣` +
           `>  No se encontraron:\n` +
@@ -35,7 +35,7 @@ module.exports = {
     }
     msg.reply(
       `╭──⬣「 Totoro recargando 」⬣\n` +
-        `│  ≡◦ 🪼 Plugins\n` +
+        `│  ≡◦ 🦤 Plugins\n` +
         `│  ≡◦ 🧩 Componentes\n` +
         `╰──⬣\n` +
         `> ${totoro.plugins.size} Plugins recargados.\n` +

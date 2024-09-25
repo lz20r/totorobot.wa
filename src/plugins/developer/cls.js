@@ -30,7 +30,7 @@ module.exports = {
           `╰─⬣\n` +
           `> Totoro ha limpiado la consola.`,
       });
-      await msg.react("🪼");
+      await msg.react("🦤");
     } catch (error) {
       totoroLog.error(
         "./logs/plugins/developer/cls.log",

@@ -98,7 +98,7 @@ module.exports = {
             interactiveMessage: {
               header: { text: `\`TikTok Stalk 👀\`` },
               body: { text: stalk },
-              footer: { text: "ttstalk by Totoro 🪼" },
+              footer: { text: "ttstalk by Totoro 🦤" },
               header: {
                 hasMediaAttachment: true,
                 imageMessage: img.imageMessage,
@@ -128,7 +128,7 @@ module.exports = {
 
       await totoro.relayMessage(from, msag.message, { messageId: info.id });
 
-      await msg.react("🪼");
+      await msg.react("🦤");
     } catch (err) {
       totoroLog.error(
         "./logs/plugins/information/tiktokstalk.log",

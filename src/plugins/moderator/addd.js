@@ -71,7 +71,7 @@ module.exports = {
               `> Nuevo miembro: @${phoneNumber}\n` +
               `> Moderador: @${sender.split("@")[0]}\n` +
               `> ⏰ Fecha y hora: ${new Date().toLocaleString()}\n\n` +
-              `> 🪼 Actualmente en *${groupName}* hay ${
+              `> 🦤 Actualmente en *${groupName}* hay ${
                 groupInfo.participants.length + 1
               } miembros.`,
             mentions: [userJid, sender],
@@ -136,7 +136,7 @@ module.exports = {
             `> Nuevo miembro: @${quotedUser.split("@")[0]}\n` +
             `> Moderador: @${sender.split("@")[0]}\n` +
             `> ⏰ Fecha y hora: ${new Date().toLocaleString()}\n\n` +
-            `> 🪼 Actualmente en *${groupName}* hay ${
+            `> 🦤 Actualmente en *${groupName}* hay ${
               groupInfo.participants.length + 1
             } miembros.`,
           mentions: [quotedUser, sender],

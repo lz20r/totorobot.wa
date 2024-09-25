@@ -85,17 +85,17 @@ module.exports = {
     };
 
     let info = `╭─ 🦤 *INFO* ─✧\n`;
-    info += `│  ➙  🔹*Prefijo*: \`${prefix}\`\n`;
-    info += `│  ➙  🔹 *Plugins*: \`${total}\`\n`;
-    info += `│  ➙  🔹 *Categorías*: \`${sortedCategories.length}\`\n`;
-    info += `│  ➙  🔹 *Ayuda*: \`${prefix}ayuda <comando>\`\n`;
-    info += `│  ➙  🔹 *Dev*: @${dev.replace(/@.+/, "")}\n`;
+    info += `│  ➙ 🪶*Prefijo*: \`${prefix}\`\n`;
+    info += `│  ➙ 🪶 *Plugins*: \`${total}\`\n`;
+    info += `│  ➙ 🪶 *Categorías*: \`${sortedCategories.length}\`\n`;
+    info += `│  ➙ 🪶 *Ayuda*: \`${prefix}ayuda <comando>\`\n`;
+    info += `│  ➙ 🪶 *Dev*: @${dev.replace(/@.+/, "")}\n`;
     info += `╰────────✧\n\n`;
 
     let txt = `*─🦤 Comandos de Totoro 🦤─*\n\n`;
 
     sortedCategories.forEach((category) => {
-      const emoji = categoryEmojis[category] || "🔹";
+      const emoji = categoryEmojis[category] || "🪶";
       const categoryCount = Object.values(categories[category]).flat().length;
       txt += `*╭─ ${emoji} ${category} (${categoryCount}) ─✧*\n`; // Título de la categoría con emoji y cantidad de comandos
 

@@ -41,7 +41,7 @@ module.exports = {
         response_format: "url",
       });
 
-      await msg.react("🪼");
+      await msg.react("🦤");
       totoro.sendMessage(from, {
         image: { url: dallE.data[0].url },
         caption: `Totoro AI - DALL-E\n\nPrompt: ${content}`,

@@ -28,7 +28,7 @@ module.exports = {
 
     // Si no se proporciona un argumento, mostrar la lista de categorías
     if (!args[0]) {
-      let categoryListMessage = `╭─🪼 *${"categories"}* ─✧\n`;
+      let categoryListMessage = `╭─🦤 *${"categories"}* ─✧\n`;
 
       categories.forEach((category, index) => {
         categoryListMessage += `│ ➙ ${index + 1}. ${
@@ -90,7 +90,7 @@ module.exports = {
     );
 
     if (commandsInCategory.size > 0) {
-      let categoryMessage = `╭─🪼 *${
+      let categoryMessage = `╭─🦤 *${
         selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)
       }* ─✧\n`;
 

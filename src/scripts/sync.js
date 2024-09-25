@@ -208,7 +208,7 @@ class totoDBSync {
     try {
       await this.tDB.sequelize.authenticate();
       syncMessage += `
-| 🪼  Total de usuarios: ${await this.countTotalUsers()}
+| 🦤  Total de usuarios: ${await this.countTotalUsers()}
 │ 🚀  Conexión exitosa a la base de datos principal: ${this.tDB.sequelize.getDatabaseName()}`;
 
       // Sincronizar en orden correcto

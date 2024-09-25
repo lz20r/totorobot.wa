@@ -128,7 +128,7 @@ module.exports = {
         return;
       }
 
-      await msg.react("🪼");
+      await msg.react("🦤");
     } catch (error) {
       return sendError(
         totoro,
