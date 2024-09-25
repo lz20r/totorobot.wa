@@ -27,17 +27,12 @@ module.exports = {
     const plugins = totoro.plugins || [];
     const categories = {};
 
-    // total de comandos
-    let total = 0;
-    plugins.forEach((plugin) => {
-      total++;
-    });
+    // Total de comandos
+    let total = plugins.length;
 
     // Organizar los comandos en categorías y subcategorías
     plugins.forEach((plugin) => {
-      const category = plugin.category
-        ? plugin.category.split("\\")[0]
-        : "Sin Categoría";
+      const category = plugin.category ? plugin.category : "Sin Categoría";
       const subcategory = plugin.subcategory || "Sin Subcategoría";
       if (!categories[category]) {
         categories[category] = {};
@@ -48,15 +43,11 @@ module.exports = {
       categories[category][subcategory].push(plugin);
     });
 
-    // Ordenar las categorías, subcategorías y comandos alfabéticamente
-    const sortedCategories = Object.keys(categories).sort();
-    sortedCategories.forEach((category) => {
-      const subcategories = Object.keys(categories[category]).sort();
-      subcategories.forEach((subcategory) => {
-        categories[category][subcategory].sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-      });
+    // Ordenar las categorías, moviendo 'developer' al final
+    const sortedCategories = Object.keys(categories).sort((a, b) => {
+      if (a === "developer") return 1; // Mover 'developer' al final
+      if (b === "developer") return -1; // Mover 'developer' al final
+      return a.localeCompare(b); // Ordenar alfabéticamente
     });
 
     // Crear el texto del menú con emojis originales
@@ -72,16 +63,18 @@ module.exports = {
       "inteligencia artificial": "🧠",
       information: "📘",
       moderator: "🛡️",
-      totoEconomy: "💰",
       multimedia: "🎬",
       payment: "💳",
       premium: "💎",
       search: "🖥️",
-      "Sin Categoría": "🌀",
-      user: "🔑",
+      nfw: "🔞",
+      "Sin Categoría": "🌀", 
+      interactions: "🦝" ,
+      setup: "🛠️",
       utilities: "🔨",
-      faqs: "❓",
-      support: "🤝",
+      totoGames: "🎲",
+      totoEconomy: "💰",
+      totoSupport: "🤝",
     };
 
     let info = `╭─ 🦤 *INFO* ─✧\n`;
