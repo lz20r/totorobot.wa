@@ -84,7 +84,7 @@ module.exports = {
       support: "🤝",
     };
 
-    let info = `╭─ 🪼 *INFO* ─✧\n`;
+    let info = `╭─ 🦤 *INFO* ─✧\n`;
     info += `│  ➙  🔹*Prefijo*: \`${prefix}\`\n`;
     info += `│  ➙  🔹 *Plugins*: \`${total}\`\n`;
     info += `│  ➙  🔹 *Categorías*: \`${sortedCategories.length}\`\n`;
@@ -92,7 +92,7 @@ module.exports = {
     info += `│  ➙  🔹 *Dev*: @${dev.replace(/@.+/, "")}\n`;
     info += `╰────────✧\n\n`;
 
-    let txt = `*─🪼 Comandos de Totoro 🪼─*\n\n`;
+    let txt = `*─🦤 Comandos de Totoro 🦤─*\n\n`;
 
     sortedCategories.forEach((category) => {
       const emoji = categoryEmojis[category] || "🔹";
@@ -122,7 +122,7 @@ module.exports = {
           isForwarded: true,
           forwardedNewsletterMessageInfo: {
             newsletterJid: "120363322372961284@newsletter",
-            newsletterName: "Canal de Totoro 🪼",
+            newsletterName: "Canal de Totoro 🦤",
             serverMessageId: -1,
           },
         },
