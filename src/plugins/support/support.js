@@ -70,7 +70,7 @@ async function handleReportFlow(totoro, remoteJid, sender, message) {
 
     const { imageMessage } = await prepareWAMessageMedia(
       {
-        image: { url: "https://tinyurl.com/23dw8s8o" }, // URL de la imagen a enviar
+        image: { url: "https://tinyurl.com/2bsa7kmz" },  
       },
       { upload: totoro.waUploadToServer }
     );
@@ -126,7 +126,7 @@ async function handleSuggestionFlow(totoro, remoteJid, sender, message) {
 
     const { imageMessage } = await prepareWAMessageMedia(
       {
-        image: { url: "https://tinyurl.com/23dw8s8o" },
+        image: { url: "https://tinyurl.com/2bsa7kmz" },
       },
       { upload: totoro.waUploadToServer }
     );
@@ -182,7 +182,7 @@ async function handleReviewFlow(totoro, remoteJid, sender, message) {
 
     const { imageMessage } = await prepareWAMessageMedia(
       {
-        image: { url: "https://tinyurl.com/23dw8s8o" },
+        image: { url: "https://tinyurl.com/2bsa7kmz" },
       },
       { upload: totoro.waUploadToServer }
     );
