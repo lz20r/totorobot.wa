@@ -9,10 +9,10 @@ const client = new Genius.Client(
 );
 
 module.exports = {
-  name: "lyrics",
-  aliases: ["letras", "letra", "ly"],
-  description: "Muestra la letra de una canción",
-  usage: "Usa !letra [nombre de la canción]",
+  name: "cancion",
+  aliases: ["cancion"],
+  description: "Busca y muestra la letra de una canción usando la API de Genius.",
+  usage: `${prefix}cancion [nombre de la canción]`,
   category: "information",
   subcategory: "genius",
 
@@ -32,8 +32,7 @@ module.exports = {
       const query = args.join(" ");
 
       // Maneja la respuesta de búsqueda y los errores potenciales
-      let searches;
-      searches = await client.songs.search(query);
+      let searches = await client.songs.search(query);
 
       if (!searches || searches.length === 0) {
         help(
@@ -43,6 +42,7 @@ module.exports = {
           "Muestra la letra de una canción",
           `${prefix}lyrics [nombre de la canción]`
         );
+        return;
       }
 
       msg.react("🔍");
@@ -87,9 +87,7 @@ module.exports = {
 
       msg.react("📜");
       // Formatear la información de la canción y la letra
-      const caption = `🎵 *Título:* ${song.title}\n
-🎤 *Artista:* ${song.artist.name}\n\n
-📝 *Letra:*\n${lyrics}`;
+      const caption = `🎵 *Título:* ${song.title}\n\n🎤 *Artista:* ${song.artist.name}\n\n📝 *Letra:*\n${lyrics}`;
 
       if (imageUrl) {
         await socket.sendMessage(
