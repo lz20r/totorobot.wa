@@ -7,7 +7,7 @@ module.exports = {
   name: "shop",
   category: "totoEconomy",
   subcategory: "tienda",
-  aliases: ["store", "tienda"],
+  aliases: ["store", "tienda", "shop"],
   description:
     "Muestra la tienda de artículos donde puedes comprar usando totoCoins.",
   usage: `${prefix}shop [comprar <id>]`,
@@ -17,7 +17,10 @@ module.exports = {
     try {
       const message = msg.messages[0];
       const remoteJid = message.key.remoteJid;
-      const userId = message.key.participant; // Identificador del usuario
+      const userId = message.key.participant; 
+      const groupId = message.key.id;
+      const groupInfo = await totoro.groupMetadata(groupId);
+      const groupName = groupInfo.subject;        
 
       // Verificar si el mensaje proviene de un grupo
       if (!remoteJid.endsWith("@g.us")) {
@@ -53,38 +56,42 @@ module.exports = {
 
         // Buscar el balance del usuario en la economía
         const economyRecord = await totoEconomy.findOne({
-          where: { phone: userId, groupId: remoteJid },
+          where: { phone: userId, groupId: groupId },
         });
 
         if (!economyRecord || economyRecord.balance < item.itemPrice) {
+          economyRecord = await totoEconomy.create({
+            groupId: groupId,            
+            groupName: groupName,
+            phone: userId,
+            balance: 0,
+          });
+        } else if (economyRecord.balance < 0) {
           return sendWarning(
             totoro,
             msg,
-            "No tienes suficientes totoCoins para comprar este artículo."
+            "¡Tu balance de totoCoins es negativo! Por favor, contacta a un administrador."
           );
         }
 
-        // Realizar la compra: descontar el precio del artículo del balance del usuario
         economyRecord.balance -= item.itemPrice;
         await economyRecord.save();
 
-        // Descontar la cantidad del artículo si tiene un stock limitado
+
         if (item.quantity > 0) {
           item.quantity -= 1;
           await item.save();
         }
 
-        // Añadir el artículo al inventario del usuario
+
         const inventoryRecord = await totoInventory.findOne({
           where: { userId: userId, productId: itemId },
         });
 
         if (inventoryRecord) {
-          // Si el artículo ya está en el inventario, aumentar la cantidad
           inventoryRecord.quantity += 1;
           await inventoryRecord.save();
         } else {
-          // Si el artículo no está en el inventario, agregar un nuevo registro
           await totoInventory.create({
             userId: userId,
             productId: itemId,
@@ -136,11 +143,9 @@ module.exports = {
       shopMessage += `🛍️ Usa \`!shop comprar <id>\` para adquirir un artículo.`;
 
       // Enviar el mensaje de la tienda
-      return msg.reply({ text: shopMessage });
-    } catch (error) {
-      return msg.reply({
-        text: "Hubo un error al mostrar la tienda. Inténtalo más tarde.",
-      });
+      return msg.reply(shopMessage);
+    } catch (error){
+        msg.reply(`${error.message} || Unknown`)
     }
   },
 };
