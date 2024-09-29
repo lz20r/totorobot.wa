@@ -2,6 +2,7 @@ const { sendWarning } = require("../../functions/messages");
 const { totoEconomy, totoShop, totoInventory } = require("../../models");
 const prefix = require("../../../settings.json").prefix;
 const { Op } = require("sequelize");
+const { cmdBlock } = require("../multimedia/youtube");
 
 module.exports = {
   name: "shop",
@@ -13,6 +14,8 @@ module.exports = {
   usage: `${prefix}shop [comprar <id>]`,
   cooldown: 5,
   economy: true,
+  cmdBlock: true,
+  
   execute: async (totoro, msg, args) => {
     try {
       const message = msg.messages[0];
