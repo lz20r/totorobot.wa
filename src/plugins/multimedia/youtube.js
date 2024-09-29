@@ -9,7 +9,7 @@ module.exports = {
   subcategory: "youtube",
   description: `Realiza búsquedas en YouTube y descarga videos de YouTube.`,
   usage: "ytbdownload <video/mp4/search> <yt url o nombre>",  
-  cooldown: 10,
+  cooldown: 10, 
   cmdBlock: true,
   
   async execute(totoro, msg, args) {
